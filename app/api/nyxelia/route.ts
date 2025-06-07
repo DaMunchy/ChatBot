@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { connectDB } from '@/lib/mongodb'
 
-const API_KEY = 'AIzaSyDVTB_CdV0dYk-hHxqm09GoXiPvOrUhAnY' 
+const API_KEY = process.env.API_KEY!
+
 export async function GET() {
   const db = await connectDB()
   const session = await db.collection('sessions').findOne({ userId: 'guest' })
