@@ -1,103 +1,89 @@
-import Image from "next/image";
+"use client";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import { FaGithub, FaWhatsapp } from "react-icons/fa";
+import { useEffect, useRef } from "react";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (audio) {
+      audio.volume = 0.1;
+      audio.play().catch(() => {});
+    }
+  }, []);
+
+  return (
+    <div className="relative min-h-screen overflow-hidden">
+      <audio ref={audioRef} autoPlay loop>
+        <source src="/audio/bg.mp3" type="audio/mpeg" />
+      </audio>
+
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover"
+      >
+        <source src="/bg.mp4" type="video/mp4" />
+      </video>
+
+      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm z-10" />
+
+      <div className="absolute top-4 left-6 right-6 z-30 flex justify-between items-center px-4">
+        <motion.div
+          initial={{ opacity: 0, x: -30 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 1, ease: "easeOut" }}
+          className="text-white text-2xl md:text-3xl font-bold"
+        >
+          Munchy
+        </motion.div>
+
+        <div className="flex gap-4 text-white text-2xl md:text-3xl">
           <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
+            href="https://wa.me/6281931488608"
             target="_blank"
             rel="noopener noreferrer"
+            className="hover:text-green-400 transition duration-300"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
+            <FaWhatsapp />
           </a>
           <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
+            href="https://github.com/DaMunchy"
             target="_blank"
             rel="noopener noreferrer"
+            className="hover:text-gray-300 transition duration-300"
           >
-            Read our docs
+            <FaGithub />
           </a>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+      </div>
+
+      <div className="relative z-20 flex flex-col items-center justify-center min-h-screen px-6 text-center text-white">
+        <motion.h1
+          initial={{ opacity: 0.6, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1 }}
+          className="text-5xl md:text-7xl font-bold mb-4 drop-shadow-lg bg-gradient-to-r from-white via-purple-400 to-white text-transparent bg-clip-text animate-pulse -mt-2"
         >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+          Nyxelia
+        </motion.h1>
+
+        <p className="text-lg md:text-2xl text-gray-300 max-w-xl drop-shadow-sm mb-10">
+          An intelligent and adaptive AI chatbot built to help, entertain, and
+          evolve with you.
+        </p>
+
+        <Link href="/chat">
+          <div className="bg-white/10 backdrop-blur-md px-8 py-4 rounded-xl border border-white/20 hover:scale-105 hover:bg-white/20 transition-all duration-300 ease-in-out text-white text-lg shadow-lg">
+            Chat Now
+          </div>
+        </Link>
+      </div>
     </div>
   );
 }
