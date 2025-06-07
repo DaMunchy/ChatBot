@@ -1,20 +1,31 @@
 import { MongoClient } from 'mongodb'
 
-const uri = process.env.MONGODB_URI!
-const client = new MongoClient(uri)
+const uri = process.env.MONGODB_URI || ''
+const options = {}
 
-let cachedDb: any = null
+let client
+let clientPromise: Promise<MongoClient>
+
+declare global {
+  var _mongoClientPromise: Promise<MongoClient>
+}
+
+if (!process.env.MONGODB_URI) {
+  throw new Error('Please define the MONGODB_URI environment variable')
+}
+
+if (process.env.NODE_ENV === 'development') {
+  if (!global._mongoClientPromise) {
+    client = new MongoClient(uri, options)
+    global._mongoClientPromise = client.connect()
+  }
+  clientPromise = global._mongoClientPromise
+} else {
+  client = new MongoClient(uri, options)
+  clientPromise = client.connect()
+}
 
 export async function connectDB() {
-  if (cachedDb) return cachedDb
-
-  try {
-    await client.connect()
-    const db = client.db() 
-    cachedDb = db
-    return db
-  } catch (err) {
-    console.error('MongoDB connection error:', err)
-    throw err
-  }
+  const client = await clientPromise
+  return client.db()
 }
