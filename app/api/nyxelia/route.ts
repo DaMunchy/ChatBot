@@ -44,6 +44,7 @@ Lanjutkan respon untuk pesan terakhir dari user.
 `
 
 
+  try {
   const response = await fetch(
     `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${API_KEY}`,
     {
@@ -61,10 +62,16 @@ Lanjutkan respon untuk pesan terakhir dari user.
   )
 
   const data = await response.json()
+  console.log('Gemini response:', data)
 
   const reply =
     data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() ||
     'Hmm, aku belum bisa jawab itu 😅'
 
   return NextResponse.json({ reply })
+} catch (error) {
+  console.error('Fetch error:', error)
+  return NextResponse.json({ reply: 'Ada error waktu ambil jawaban dari Gemini 😢' })
 }
+}
+
