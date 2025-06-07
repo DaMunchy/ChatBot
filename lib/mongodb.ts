@@ -1,7 +1,6 @@
-
 import { MongoClient } from 'mongodb'
 
-const uri = 'mongodb://127.0.0.1:27017'
+const uri = process.env.MONGODB_URI!
 const client = new MongoClient(uri)
 
 let cachedDb: any = null
@@ -11,7 +10,7 @@ export async function connectDB() {
 
   try {
     await client.connect()
-    const db = client.db('nyxelia_db') 
+    const db = client.db() 
     cachedDb = db
     return db
   } catch (err) {
