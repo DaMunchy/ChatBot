@@ -32,24 +32,25 @@ export default function ChatPage() {
   }, [])
 
   const handleSend = async () => {
-    const trimmed = input.trim()
-    if (!trimmed) return
+  const trimmed = input.trim()
+  if (!trimmed) return
 
-    const newMessages = [...messages, { from: 'user', text: trimmed }] as Message[]
-    setMessages(newMessages)
-    setInput('')
-    setLoading(true)
+  const newMessages = [...messages, { from: 'user', text: trimmed }] as Message[]
+  setMessages(newMessages)
+  setInput('')
+  setLoading(true)
 
-    const res = await fetch('/api/nyxelia', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ messages: newMessages })
-    })
+  const res = await fetch('/api/nyxelia', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ messages: newMessages, userId: 'guest' })
+  })
 
-    const data = await res.json()
-    setMessages(prev => [...prev, { from: 'ai', text: data.reply }])
-    setLoading(false)
-  }
+  const data = await res.json()
+  setMessages(prev => [...prev, { from: 'ai', text: data.reply }])
+  setLoading(false)
+}
+
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') handleSend()
